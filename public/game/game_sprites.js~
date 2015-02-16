@@ -102,8 +102,6 @@ exhibicionista.preMove= function (){
    }
 };
 
-exhibicionista.onCollision=function () {exhibicionista.animation=1;}
-
 level.sprites.push(exhibicionista);
 
 var lobo = new Sprite(loboImage, "lobo", 0, 0, 64, 64, 7, 2, true);
