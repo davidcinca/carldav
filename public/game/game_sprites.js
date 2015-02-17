@@ -92,17 +92,29 @@ level.sprites.push(tollgate);
 
 var exhibicionista = new Sprite(exhbicionistaImage, "exhibicionista", 0, 0, 64, 128, 5, 6, true);
 exhibicionista.preMove= function (){
-   if (exhibicionista.animation!=0){
+   if (exhibicionista.state>1){
       exhibicionista.width=128; 
       exhibicionista.sourceWidth=128;
-      exhibicionista.blocking=[{x: exhibicionista.tileX, y: exhibicionista.tileY}, {x: exhibicionista.tileX+1, y: exhibicionista.tileY}];
-      if(main.tileX==exhibicionista.tileX+1 && main.tileY==exhibicionista.tileY){main.tileX=main.tileX+1}
    }else{
       exhibicionista.blocking=[{x: exhibicionista.tileX, y: exhibicionista.tileY}];
    }
+   if(exhibicionista.tileY==8){exhibicionista.path=[{x: exhibicionista.tileX, y: 7}, {x: exhibicionista.tileX, y: 6}, 
+                                                    {x: exhibicionista.tileX, y: 5}, {x: exhibicionista.tileX, y: 4},
+                                                    {x: exhibicionista.tileX, y: 3}, {x: exhibicionista.tileX, y: 2}];
+                               exhibicionista.state=3;}
+   if(exhibicionista.tileY==2){exhibicionista.path=[{x: exhibicionista.tileX, y: 3}, {x: exhibicionista.tileX, y: 4}, 
+                                                    {x: exhibicionista.tileX, y: 5}, {x: exhibicionista.tileX, y: 6},
+                                                    {x: exhibicionista.tileX, y: 7}, {x: exhibicionista.tileX, y: 8}];
+                               exhibicionista.state=2;}
 };
 
-exhibicionista.onCollision=function () {exhibicionista.animation=1;}
+exhibicionista.onCollision=function () {
+                 exhibicionista.state=2;
+                 exhibicionista.path=[{x: exhibicionista.tileX, y: exhibicionista.tileY+1}, 
+                                      {x: exhibicionista.tileX, y: exhibicionista.tileY+2}];
+                 exhibicionista.onCollision= function (){};
+                 exhibicionista.blocking= [];
+};
 
 level.sprites.push(exhibicionista);
 
