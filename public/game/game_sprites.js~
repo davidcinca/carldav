@@ -143,7 +143,7 @@ level.sprites.push(ser_de_ganimedes);
 var macroFreud = new Sprite(macroFreudImage, "macro_Freud", 0, 0, 128, 256, 10, 5, true);
 level.sprites.push(macroFreud);
 
-var buhocosmico = new Sprite(buhocosmicoImage, "buho_cosmico", 0,0, 64, 64, 2,2, true);
+var buhocosmico = new Sprite(buhocosmicoImage, "buho_cosmico", 0,0, 64, 64, 49,2, true);
 level.sprites.push(buhocosmico);
 
 var borracho = new Sprite(borrachoImage, "borracho", 0,0, 128, 64, 2,3, true);
@@ -195,9 +195,7 @@ zancopanco.animate=function(falling){
       }
       this.sequence=0;
     }
-    console.log(this.falling);
     if(this.falling){
-      console.log("fall");
       this.falling=false;
       this.animation=0;
       this.state=1;
