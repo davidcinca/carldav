@@ -69,43 +69,50 @@ yonki.preMove = function(){
 
 level.sprites.push(yonki);
 
-var tollgate = new Sprite(tollgateImage, "tollgate", 0, 0, 64, 384, 20, 2);
-tollgate.heightCorrection=0;
-tollgate.animation=0;
-tollgate.blocking= [{x:tollgate.tileX, y: tollgate.tileY},{x:tollgate.tileX, y: tollgate.tileY+1}, {x:tollgate.tileX, y: tollgate.tileY+2}, 
-                   {x:tollgate.tileX, y: tollgate.tileY+3}, {x:tollgate.tileX, y: tollgate.tileY+4}, {x:tollgate.tileX, y: tollgate.tileY+5} ];
+function TollgateSprite(id, tileX){
+  Sprite.call(this, tollgateImage, id, 0 , 0, 64, 384, tileX, 2)
+  this.heightCorrection=0;
+  this.animation=0;
+  this.blocking= [{x:this.tileX, y: this.tileY},{x:this.tileX, y: this.tileY+1}, {x:this.tileX, y: this.tileY+2}, 
+                   {x:this.tileX, y: this.tileY+3}, {x:this.tileX, y: this.tileY+4}, {x:this.tileX, y: this.tileY+5} ];
 
-tollgate.preMove=function(){
-   if(tollgate.animation==2){
-         tollgate.blocking= [{x:tollgate.tileX, y: tollgate.tileY},{x:tollgate.tileX, y: tollgate.tileY+1},
-                                                 {x:tollgate.tileX, y: tollgate.tileY+2}, {x:tollgate.tileX, y: tollgate.tileY+3}, 
-                                                 {x:tollgate.tileX, y: tollgate.tileY+4}];
+  this.preMove=function(){
+   if(this.animation==2){
+         this.blocking= [{x:this.tileX, y: this.tileY},{x:this.tileX, y: this.tileY+1},
+                                                 {x:this.tileX, y: this.tileY+2}, {x:this.tileX, y: this.tileY+3}, 
+                                                 {x:this.tileX, y: this.tileY+4}];
     }else{
-         tollgate.blocking= [{x:tollgate.tileX, y: tollgate.tileY},{x:tollgate.tileX, y: tollgate.tileY+1}, 
-                             {x:tollgate.tileX, y: tollgate.tileY+2}, {x:tollgate.tileX, y: tollgate.tileY+3},
-                             {x:tollgate.tileX, y: tollgate.tileY+4}, {x:tollgate.tileX, y: tollgate.tileY+5} ];
+         this.blocking= [{x:this.tileX, y: this.tileY},{x:this.tileX, y: this.tileY+1}, 
+                             {x:this.tileX, y: this.tileY+2}, {x:this.tileX, y: this.tileY+3},
+                             {x:this.tileX, y: this.tileY+4}, {x:this.tileX, y: this.tileY+5} ];
     }
-    if(tollgate.leverage){
-       tollgate.open();
+    if(this.leverage){
+       this.open();
     }
-}
-tollgate.leverage=false;
-tollgate.sequence=0;
-tollgate.open=function(){
-    tollgate.sequence++;
-    if(tollgate.sequence==8){
-     tollgate.animation=1
+  }
+  this.leverage=false;
+  this.sequence=0;
+  this.openned=false;
+  this.open=function(){
+    this.sequence++;
+    if(this.sequence==8){
+     this.animation=1
     }
-    if(tollgate.sequence==24){
-      tollgate.open=function(){};
-      tollgate.animation=2;
-      zancopanco.falling=true;
+    if(this.sequence==24){
+      this.open=function(){};
+      this.animation=2;
+      this.openned=true;
     }
+  };
 };
-level.sprites.push(tollgate);
 
-                   
+var tollgate1 = new TollgateSprite("tollgate", 20);
+var tollgate2 = new TollgateSprite("tollgate2", 30);
+var tollgate3 = new TollgateSprite("tollgate3", 40);
 
+
+level.sprites.push(tollgate1, tollgate2, tollgate3);
+     
 var exhibicionista = new Sprite(exhbicionistaImage, "exhibicionista", 0, 0, 64, 128, 5, 6, true);
 exhibicionista.preMove= function (){
    if (exhibicionista.state>1){
@@ -171,11 +178,12 @@ var zancopanco = new Sprite(zancopancoImage, "zanco_panco", 0, 0, 128, 128, 18, 
 
 zancopanco.onCollision=function(){
     this.animation=1;
-    tollgate.leverage= true;
+    tollgate1.leverage= true;
 };
 zancopanco.preMove=function(){
-    if(main.vx!=0 || main.vy!=0){
-       zancopanco.animation=0;
+    if(tollgate1.openned){
+       this.falling=true;
+       tollgate1.openned=false;
     }
     this.animate(this.falling);
 };
@@ -183,7 +191,7 @@ zancopanco.falling=false;
 zancopanco.sequence=0;
 zancopanco.animate=function(falling){
     this.sequence++;
-    if(this.sequence==32){
+    if(this.sequence==32 && this.state==0 || this.sequence==4 && this.state==1){
       if(this.animation==0){
         this.animation=1;
       }else{
