@@ -85,7 +85,23 @@ tollgate.preMove=function(){
                              {x:tollgate.tileX, y: tollgate.tileY+2}, {x:tollgate.tileX, y: tollgate.tileY+3},
                              {x:tollgate.tileX, y: tollgate.tileY+4}, {x:tollgate.tileX, y: tollgate.tileY+5} ];
     }
+    if(tollgate.leverage){
+       tollgate.open();
+    }
 }
+tollgate.leverage=false;
+tollgate.sequence=0;
+tollgate.open=function(){
+    tollgate.sequence++;
+    if(tollgate.sequence==8){
+     tollgate.animation=1
+    }
+    if(tollgate.sequence==24){
+      tollgate.open=function(){};
+      tollgate.animation=2;
+      zancopanco.falling=true;
+    }
+};
 level.sprites.push(tollgate);
 
                    
@@ -127,7 +143,6 @@ level.sprites.push(ser_de_ganimedes);
 var macroFreud = new Sprite(macroFreudImage, "macro_Freud", 0, 0, 128, 256, 10, 5, true);
 level.sprites.push(macroFreud);
 
-
 var buhocosmico = new Sprite(buhocosmicoImage, "buho_cosmico", 0,0, 64, 64, 2,2, true);
 level.sprites.push(buhocosmico);
 
@@ -140,10 +155,8 @@ level.sprites.push(conejo);
 var gordoDesagradable = new Sprite(gordoDesagradableImage, "gordo_desagradable", 0, 0, 64, 128, 15, 3, true);
 level.sprites.push(gordoDesagradable);
 
-
 var grimble= new Sprite(grimbleImage, "grimble", 0, 0, 64, 64, 16, 4, true);
 level.sprites.push(grimble);
-
 
 var mujerdelacalle = new Sprite(mujerdelacalleImage, "mujer_de_la_calle", 0, 0, 64, 128, 13, 2, true);
 level.sprites.push(mujerdelacalle);
@@ -155,4 +168,38 @@ var sigmoundFreud = new Sprite(sigmoundFreudImage, "Sigmound_Freud", 0, 0, 64, 1
 level.sprites.push(sigmoundFreud);
 
 var zancopanco = new Sprite(zancopancoImage, "zanco_panco", 0, 0, 128, 128, 18, 2, true);
+
+zancopanco.onCollision=function(){
+    this.animation=1;
+    tollgate.leverage= true;
+};
+zancopanco.preMove=function(){
+    if(main.vx!=0 || main.vy!=0){
+       zancopanco.animation=0;
+    }
+    this.animate(this.falling);
+};
+zancopanco.falling=false;
+zancopanco.sequence=0;
+zancopanco.animate=function(falling){
+    this.sequence++;
+    if(this.sequence==32){
+      if(this.animation==0){
+        this.animation=1;
+      }else{
+        if(this.state==1){
+           this.animate=function(falling){};
+        }else{
+           this.animation=0;
+        }
+      }
+      this.sequence=0;
+    }
+    if(this.falling){
+      this.falling=false;
+      this.animation=0;
+      this.state=1;
+      this.sequence=0;
+    }
+};
 level.sprites.push(zancopanco);
