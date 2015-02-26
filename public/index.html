@@ -1,23 +1,101 @@
-<!DOCTYPE HTML>
+
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
+<title>Pendent titol</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<style type="text/css">
+
+#top, #bottom, #left, #right {
+background: #000;
+}
+#left, #right {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 0px;
+  }
+  #left { left: 0; }
+  #right { right: 0; }
+  
+#top, #bottom {
+  position: absolute;
+  left: 0; right: 0;
+  height: 0px;
+  }
+  #top { top: 0; }
+  #bottom { bottom: 0; }
+
+body, h1 {
+  font-family: "Helvetica Neue", "Segoe UI", Segoe, Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.container {
+  margin-left:  auto;
+  margin-right:  auto;
+  margin-top: 177px;
+  max-width: 1170px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.row:before, .row:after {
+  display: table;
+  content: " ";
+}
+
+h1 {
+  font-size: 48px;
+  font-weight: 300;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.lead {
+  font-size: 21px;
+  font-weight: 200;
+  margin-bottom: 20px;
+}
+
+p {
+  margin: 30px;
+}
+
+a {
+  color: #3282e6;
+  text-decoration: none;
+}
+</style>
     <script type="text/javascript" src="lib/objects.js"></script> 
     <script type="text/javascript" src="game/images.js"></script> 
     <script type="text/javascript" src="game/levels.js"></script>
     <script type="text/javascript" src="game/game_sprites.js"></script> 
     <script type="text/javascript" src="lib/game_lib.js"></script>
 
-      
-    <style>
-      body {
-        margin: 0px;
-        padding: 0px;
-        background-color: #000000;
-      }
-    </style>
-  </head>
-  <body>
+</head>
+
+<body>
+
+<div id="left"></div>
+<div id="right"></div>
+<div id="top"></div>
+<div id="bottom"></div>
+
+
+<div id="fb-root"></div>
+<br />
+<br />
+<h1>
     <canvas id="myCanvas" width="640" height="512"></canvas>
     <script type="text/javascript" src="lib/engine.js"></script>
-  </body>
-</html>   
+</h1>
+</body>
+</html>
