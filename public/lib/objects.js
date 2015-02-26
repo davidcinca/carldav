@@ -38,6 +38,7 @@ function Sprite (img, id, sourceX, sourceY, sourceWidth, sourceHeight, tileX, ti
 
    this.state = 0;
    this.animation = 0;
+   this.numberAnimations=4;
    this.animationSpeed= 0.25;
 
    this.preMove = function(){};

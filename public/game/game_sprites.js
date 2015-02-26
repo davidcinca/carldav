@@ -21,7 +21,7 @@ main.preMove = function() {
 	        main.path=dijkstra_path({x: main.tileX, y: main.tileY}, block(),{x: Mouse_point.x, y: Mouse_point.y});
 		}
 	    Mouse_point.x="init";
-		Mouse_point.y="init";
+	    Mouse_point.y="init";
 	}
 };
 
@@ -61,9 +61,9 @@ yonki.onCollision = function(){
 
 yonki.preMove = function(){
 	if(main.vx!=0 || main.vy!=0){
-           yonki.talking=false;
-           texts=eliminateIdArray("yonki_1", texts);
-           textBoxes=eliminateIdArray("yonki_1", textBoxes);
+           this.talking=false;
+           texts=eliminateArrayObject("yonki_1","id" ,texts);
+           textBoxes=eliminateArrayObject("yonki_1", "id", textBoxes);
 	}
 };
 
@@ -115,24 +115,29 @@ level.sprites.push(tollgate1, tollgate2, tollgate3);
      
 var exhibicionista = new Sprite(exhbicionistaImage, "exhibicionista", 0, 0, 64, 128, 5, 6, true);
 exhibicionista.preMove= function (){
-   if (exhibicionista.state>1){
-      exhibicionista.width=128; 
-      exhibicionista.sourceWidth=128;
+   if (this.state>1){
+      this.width=128; 
+      this.sourceWidth=128;
    }else{
-      exhibicionista.blocking=[{x: exhibicionista.tileX, y: exhibicionista.tileY}];
+      this.blocking=[{x: this.tileX, y: this.tileY}];
    }
-   if(exhibicionista.tileY==8){exhibicionista.path=[{x: exhibicionista.tileX, y: 7}, {x: exhibicionista.tileX, y: 6}, 
-                                                    {x: exhibicionista.tileX, y: 5}, {x: exhibicionista.tileX, y: 4},
-                                                    {x: exhibicionista.tileX, y: 3}, {x: exhibicionista.tileX, y: 2}];
-                               exhibicionista.state=3;}
-   if(exhibicionista.tileY==2){exhibicionista.path=[{x: exhibicionista.tileX, y: 3}, {x: exhibicionista.tileX, y: 4}, 
-                                                    {x: exhibicionista.tileX, y: 5}, {x: exhibicionista.tileX, y: 6},
-                                                    {x: exhibicionista.tileX, y: 7}, {x: exhibicionista.tileX, y: 8}];
-                               exhibicionista.state=2;}
+   if(this.tileY==8){this.path=[{x: this.tileX, y: 7}, {x: this.tileX, y: 6}, 
+                                                    {x: this.tileX, y: 5}, {x: this.tileX, y: 4},
+                                                    {x: this.tileX, y: 3}, {x: this.tileX, y: 2}];
+                               this.state=3;
+                               this.numberAnimations=3;
+                    }
+   if(this.tileY==2){this.path=[{x: this.tileX, y: 3}, {x: this.tileX, y: 4}, 
+                                                    {x: this.tileX, y: 5}, {x: this.tileX, y: 6},
+                                                    {x: this.tileX, y: 7}, {x: this.tileX, y: 8}];
+                               this.state=2;
+                               this.numberAnimations=3;
+                     }
 };
 
 exhibicionista.onCollision=function () {
                  exhibicionista.state=2;
+                 exhibicionista.numberAnimations=3;
                  exhibicionista.path=[{x: exhibicionista.tileX, y: exhibicionista.tileY+1}, 
                                       {x: exhibicionista.tileX, y: exhibicionista.tileY+2}];
                  exhibicionista.onCollision= function (){};
@@ -147,8 +152,8 @@ level.sprites.push(lobo);
 var ser_de_ganimedes = new Sprite(ser_de_ganimedesImage,"ser_de_ganimedes", 0, 0, 64, 64, 9, 3, true);
 level.sprites.push(ser_de_ganimedes);
 
-var macroFreud = new Sprite(macroFreudImage, "macro_Freud", 0, 0, 128, 256, 10, 5, true);
-level.sprites.push(macroFreud);
+
+
 
 var buhocosmico = new Sprite(buhocosmicoImage, "buho_cosmico", 0,0, 64, 64, 49,2, true);
 level.sprites.push(buhocosmico);
@@ -172,6 +177,53 @@ var robertjohnson = new Sprite(robertjohnsonImage, "Rober_Johnson", 0, 0, 64, 12
 level.sprites.push(robertjohnson);
 
 var sigmoundFreud = new Sprite(sigmoundFreudImage, "Sigmound_Freud", 0, 0, 64, 128, 17, 7, true);
+sigmoundFreud.preMove=function(){this.animate();};
+sigmoundFreud.sequence=0;
+sigmoundFreud.animate=function(){
+  this.sequence++;
+  if(this.sequence==8){
+      if(this.animation==4){
+        this.animation=0;
+      }else{
+        this.animation++;
+      }
+      this.sequence=0;
+    }
+};
+
+var macroFreud = new Sprite(macroFreudImage, "macro_Freud", 0, 0, 128, 256, 17, 7, true);
+
+macroFreud.preMove=function(){
+  if(macroFreud.path.length==0 && macroFreud.exists){
+    macroFreud.path=dijkstra_path({x: macroFreud.tileX, y: macroFreud.tileY}, block(), {x: main.tileX-1, y: main.tileY});
+  }
+  if(macroFreud.vx>0){
+    macroFreud.state=1;
+    macroFreud.numberAnimations=2;
+  }
+  if(macroFreud.vx<0){
+    macroFreud.state=3;
+    macroFreud.numberAnimations=2;
+  }
+  if(macroFreud.vy>0){
+    macroFreud.state=0;
+    macroFreud.numberAnimations=3;
+  }
+  if(macroFreud.vy<0){
+    macroFreud.state=2;
+    macroFreud.numberAnimations=3;
+  }
+};
+
+macroFreud.exists=false;
+   
+sigmoundFreud.onCollision=function(){
+  level.sprites=eliminateArrayObject("Sigmound_Freud", "id", level.sprites);
+  macroFreud.path=dijkstra_path({x: macroFreud.tileX, y: macroFreud.tileY}, block(), {x: main.tileX-1, y: main.tileY});
+  level.sprites.push(macroFreud);
+  macroFreud.exists=true;
+};
+
 level.sprites.push(sigmoundFreud);
 
 var zancopanco = new Sprite(zancopancoImage, "zanco_panco", 0, 0, 128, 128, 18, 2, true);

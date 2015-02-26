@@ -93,6 +93,8 @@ function dijkstra_path(pi, matrix, pf){
 		return points.reverse();
 }
 
+
+
 //defines the mouseHandler
 function mousedownHandler(){
 	mouseX = Math.trunc((event.pageX- canvas.offsetLeft + camera.x)/map.tilewidth);
@@ -120,8 +122,8 @@ function move(){
 	    	}
 	    }
   	    if(level.sprites[i].path.length>0){
-  	    	level.sprites[i].vx=(level.sprites[i].path[0].x-level.sprites[i].tileX)*game.vFactor;
-  	    	level.sprites[i].vy=(level.sprites[i].path[0].y-level.sprites[i].tileY)*game.vFactor;  		
+                level.sprites[i].vx=(level.sprites[i].path[0].x-level.sprites[i].tileX)*game.vFactor;
+  	    	level.sprites[i].vy=(level.sprites[i].path[0].y-level.sprites[i].tileY)*game.vFactor;
 	    }else{
 	    	level.sprites[i].vx=0;
 	    	level.sprites[i].vy=0;
@@ -130,7 +132,7 @@ function move(){
 	
 	for(var i = 0; i < level.sprites.length; i++){
 		if(level.sprites[i].vx!=0 || level.sprites[i].vy!=0){
-			level.sprites[i].animation=(level.sprites[i].animation+level.sprites[i].animationSpeed)%(level.sprites[i].image.width/level.sprites[i].sourceWidth);
+			level.sprites[i].animation=(level.sprites[i].animation+level.sprites[i].animationSpeed)%level.sprites[i].numberAnimations;
 		}
 		
 		level.sprites[i].x=level.sprites[i].x+level.sprites[i].vx;
@@ -162,7 +164,7 @@ function render(){
    drawingSurface.translate(-camera.x,0);
    mapRender();
 
-   level.sprites=sortArrayByTileY(level.sprites);
+   level.sprites=sortArrayByObject("tileY", level.sprites);
    spriteRender(); 
    textRender();
    
@@ -272,13 +274,13 @@ function moveCamera(){
    if(camera.y+camera.height > gameWorld.y+gameWorld.height){ camera.y = gameWorld.height-camera.height;}
 }
 
-function eliminateIdArray(id, array){
+function eliminateArrayObject(id, object, array){
    var j= NaN;
    var ar = [];
    var ar2= [];
    for(var i=0; i<array.length; i++){
-      if(array[i].id || array[i].id== 0){
-        if(array[i].id==id){
+      if(array[i][object] || array[i][object]== 0){
+        if(array[i][object]==id){
           j=i;  
         }
       }   
@@ -290,14 +292,13 @@ function eliminateIdArray(id, array){
    return ar.concat(ar2); 
 }
 
-function sortArrayByTileY(array){
+function sortArrayByObject(object, array){
    var arr = [{tileY: -1}];
    var toPut= 0;
    for (var i=0; i<array.length; i++){
-
        toPut= arr.length;
        for(var j=0; j<arr.length; j++){
-         if(array[i].tileY>arr[j].tileY){
+         if(array[i][object]>arr[j][object]){
            toPut=j+1;
          }
        }
