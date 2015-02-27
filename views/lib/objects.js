@@ -38,6 +38,7 @@ function Sprite (img, id, sourceX, sourceY, sourceWidth, sourceHeight, tileX, ti
 
    this.state = 0;
    this.animation = 0;
+   this.sequence = 0;
    this.numberAnimations=4;
    this.animationSpeed= 0.25;
 
@@ -55,3 +56,15 @@ function Level(map, tile_sheet, background, sprites){
    this.background= background;
    this.sprites= sprites || []; 
 }
+
+function simpleAnimation(object, frames, time_lapse){
+  object.sequence++;
+  if(object.sequence==time_lapse){
+      if(object.animation==frames-1){
+        object.animation=0;
+      }else{
+        object.animation++;
+      }
+      object.sequence=0;
+    }
+};

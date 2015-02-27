@@ -65,6 +65,7 @@ yonki.preMove = function(){
            texts=eliminateArrayObject("yonki_1","id" ,texts);
            textBoxes=eliminateArrayObject("yonki_1", "id", textBoxes);
 	}
+        simpleAnimation(this, 3, 40);
 };
 
 level.sprites.push(yonki);
@@ -146,10 +147,10 @@ exhibicionista.onCollision=function () {
 
 level.sprites.push(exhibicionista);
 
-var lobo = new Sprite(loboImage, "lobo", 0, 0, 64, 64, 7, 2, true);
+var lobo = new Sprite(loboImage, "lobo", 0, 0, 64, 64, 24, 2, true);
 level.sprites.push(lobo);
 
-var ser_de_ganimedes = new Sprite(ser_de_ganimedesImage,"ser_de_ganimedes", 0, 0, 64, 64, 9, 3, true);
+var ser_de_ganimedes = new Sprite(ser_de_ganimedesImage,"ser_de_ganimedes", 0, 0, 64, 64, 25, 6, true);
 level.sprites.push(ser_de_ganimedes);
 
 
@@ -159,43 +160,37 @@ var buhocosmico = new Sprite(buhocosmicoImage, "buho_cosmico", 0,0, 64, 64, 49,2
 level.sprites.push(buhocosmico);
 
 var borracho = new Sprite(borrachoImage, "borracho", 0,0, 128, 64, 2,3, true);
+borracho.preMove=function(){simpleAnimation(this, 4, 32);};
 level.sprites.push(borracho);
 
 var conejo = new Sprite(conejoImage, "conejo", 0,0, 64, 128, 10, 4, true);
+conejo.preMove=function(){simpleAnimation(this, 5, 50);};
 level.sprites.push(conejo);
 
-var gordoDesagradable = new Sprite(gordoDesagradableImage, "gordo_desagradable", 0, 0, 64, 128, 15, 3, true);
+var gordoDesagradable = new Sprite(gordoDesagradableImage, "gordo_desagradable", 0, 0, 64, 128, 29, 2, true);
+gordoDesagradable.preMove=function(){simpleAnimation(this, 5, 20)};
 level.sprites.push(gordoDesagradable);
 
 var grimble= new Sprite(grimbleImage, "grimble", 0, 0, 64, 64, 16, 4, true);
+grimble.preMove=function(){simpleAnimation(this, 4, 4);};
 level.sprites.push(grimble);
 
 var mujerdelacalle = new Sprite(mujerdelacalleImage, "mujer_de_la_calle", 0, 0, 64, 128, 13, 2, true);
 level.sprites.push(mujerdelacalle);
+mujerdelacalle.preMove=function(){simpleAnimation(this, 3, 12);};
 
-var robertjohnson = new Sprite(robertjohnsonImage, "Rober_Johnson", 0, 0, 64, 128, 12, 3, true);
+var robertjohnson = new Sprite(robertjohnsonImage, "Rober_Johnson", 0, 0, 64, 128, 12, 7, true);
+robertjohnson.preMove=function(){simpleAnimation(this, 3, 12);};
 level.sprites.push(robertjohnson);
 
 var sigmoundFreud = new Sprite(sigmoundFreudImage, "Sigmound_Freud", 0, 0, 64, 128, 17, 7, true);
-sigmoundFreud.preMove=function(){this.animate();};
-sigmoundFreud.sequence=0;
-sigmoundFreud.animate=function(){
-  this.sequence++;
-  if(this.sequence==8){
-      if(this.animation==4){
-        this.animation=0;
-      }else{
-        this.animation++;
-      }
-      this.sequence=0;
-    }
-};
+sigmoundFreud.preMove=function(){simpleAnimation(this, 5, 16);};
 
 var macroFreud = new Sprite(macroFreudImage, "macro_Freud", 0, 0, 128, 256, 17, 7, true);
 
 macroFreud.preMove=function(){
   if(macroFreud.path.length==0 && macroFreud.exists){
-    macroFreud.path=dijkstra_path({x: macroFreud.tileX, y: macroFreud.tileY}, block(), {x: main.tileX-1, y: main.tileY});
+    macroFreud.path=dijkstra_path({x: macroFreud.tileX, y: macroFreud.tileY}, block(), {x: main.tileX-2, y: main.tileY});
   }
   if(macroFreud.vx>0){
     macroFreud.state=1;
@@ -239,7 +234,6 @@ zancopanco.preMove=function(){
     this.animate(this.falling);
 };
 zancopanco.falling=false;
-zancopanco.sequence=0;
 zancopanco.animate=function(falling){
     this.sequence++;
     if(this.sequence==32 && this.state==0 || this.sequence==4 && this.state==1){

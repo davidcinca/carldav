@@ -144,6 +144,7 @@ function move(){
 	}   
 }
 
+
 //sets the gameWorld
 var gameWorld ={
     x: 0,
@@ -164,7 +165,7 @@ function render(){
    drawingSurface.translate(-camera.x,0);
    mapRender();
 
-   level.sprites=sortArrayByObject("tileY", level.sprites);
+   level.sprites=sortArrayByObject("tileY", level.sprites, "main");
    spriteRender(); 
    textRender();
    
@@ -292,7 +293,8 @@ function eliminateArrayObject(id, object, array){
    return ar.concat(ar2); 
 }
 
-function sortArrayByObject(object, array){
+function sortArrayByObject(object, array, exception){
+   this.exception= null || exception;
    var arr = [{tileY: -1}];
    var toPut= 0;
    for (var i=0; i<array.length; i++){

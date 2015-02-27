@@ -35,3 +35,5 @@ function update() {
  }
 
 canvas.addEventListener("mousedown", mousedownHandler, false);
+
+
